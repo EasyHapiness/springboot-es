@@ -4,7 +4,7 @@ import com.song.es.es.entity.ColorModeBean;
 import com.song.es.es.strategy.entity.Student;
 import com.song.es.es.strategy.enums.TypeEnums;
 import com.song.es.es.strategy.manager.impl.StatementClient;
-import org.springframework.http.MediaType;
+import com.song.es.es.strategy.manager.impl.TestClient;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -37,8 +37,15 @@ public class TestController {
         return "this is httpTest  " + bean.getColorName();
     }
 
+    /**
+     * 两种注入bean的管理方式
+     */
     @Resource
     StatementClient statementClient;
+
+    @Resource
+    TestClient testClient;
+
 
     @GetMapping("/sTest")
     public void getStrategy(){
@@ -47,7 +54,10 @@ public class TestController {
         Student second = Student.builder().name("second").type("2").build();
 
         statementClient.doHandler(TypeEnums.FIRST.getType(),first);
-
         statementClient.doHandler(TypeEnums.SECOND.getType(),second);
+
+        testClient.doHandler(TypeEnums.FIRST.getType(),first);
+        testClient.doHandler(TypeEnums.SECOND.getType(),second);
+
     }
 }
